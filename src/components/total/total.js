@@ -6,15 +6,25 @@ import QuestionCounter from "../question-counter";
 import FinishButton from "../finish-button";
 import TimeCounter from "../time-counter";
 import PauseButton from "../pause-button";
+import TotalFinishText from "../total-finish-text";
 
 import testFinished from "../../actions/test-finished";
 import timerTick from "../../actions/timer-tick";
 import setTimer from "../../actions/set-timer";
+import pauseToggle from "../../actions/pause-toggle";
 
 import totalWithEwStruct from "../hoc/total-with-ew-structure";
 import withIndicators from "../hoc/with-indicators";
 
-const Total = ({ total, testFinished }) => {
+const Total = ({
+  total,
+  testFinished,
+  timerTick,
+  setTimer,
+  timerId,
+  isFinished,
+  pauseToggle
+}) => {
   const { finishedCount, totalCount, isPaussed, timeLeft } = total;
   return (
     <div className="test-total">
@@ -22,39 +32,35 @@ const Total = ({ total, testFinished }) => {
         finishedCount={finishedCount}
         totalCount={totalCount}
         testFinished={testFinished}
+        isFinished={isFinished}
       />
+      <div className="time-counter-wrapper d-flex order-lg-2">
+        <TimeCounter
+          timeLeft={timeLeft}
+          testFinished={testFinished}
+          setTimer={setTimer}
+          timerTick={timerTick}
+          timerId={timerId}
+          isFinished={isFinished}
+          isPaussed={isPaussed}
+        />
+        <PauseButton isPaussed={isPaussed} pauseToggle={pauseToggle} />
+      </div>
+      <TotalFinishText />
       <FinishButton testFinished={testFinished} />
-      <TimeCounter
-        timeLeft={timeLeft}
-        testFinished={testFinished}
-        setTimer={setTimer}
-        timerTick={timerTick}
-      />
-      <PauseButton isPaussed={isPaussed} />
     </div>
   );
 };
 
-const mapStateToProps = ({ total, loading, error }) => {
-  return { total, loading, error };
+const mapStateToProps = ({ total, loading, error, timerId, isFinished }) => {
+  return { total, loading, error, timerId, isFinished };
 };
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     testFinished: () => {
-//       dispatch(testFinished());
-//     },
-//     setTimer: id => {
-//       dispatch(setTimer(id));
-//     },
-//     timerTick: dispatch(timerTick())
-//   };
-// };
 
 const mapDispatchToProps = {
   testFinished,
   setTimer,
-  timerTick
+  timerTick,
+  pauseToggle
 };
 
 export default compose(

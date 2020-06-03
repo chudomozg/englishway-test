@@ -15,14 +15,19 @@ import selectAnswer from "../../actions/select-answer";
 
 class QuestionList extends Component {
   render() {
-    const { questions, onSelectAnswer } = this.props;
+    const { questions, onSelectAnswer, isPaussed } = this.props;
     return (
       <div className="question-items row">
-        {questions.map(item => {
+        {questions.map((item, idx) => {
           return (
-            <div key={item.id}>
-              <QuestionItem item={item} onSelectAnswer={onSelectAnswer} />
-            </div>
+            // <div key={item.id}>
+            <QuestionItem
+              idx={idx + 1}
+              item={item}
+              onSelectAnswer={onSelectAnswer}
+              isPaussed={isPaussed}
+            />
+            // </div>
           );
         })}
       </div>
@@ -48,8 +53,13 @@ class QuestiionListContainers extends Component {
   }
 }
 
-const mapStateToProps = ({ questions, loading, error }) => {
-  return { questions, loading, error };
+const mapStateToProps = ({
+  questions,
+  loading,
+  error,
+  total: { isPaussed }
+}) => {
+  return { questions, loading, error, isPaussed };
 };
 
 const mapDispatchToProps = (dispatch, { service }) => {

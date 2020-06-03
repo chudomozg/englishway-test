@@ -3,10 +3,9 @@ import testLoaded from "./test-loaded";
 import testError from "./test-error";
 
 const fetchTest = (service, dispatch) => () => {
-  console.log("hello");
   dispatch(testRequested());
   service
-    .getAllQuestions()
+    .getTest()
     .then(data => dispatch(testLoaded(data)))
     .catch(error => dispatch(testError(error)));
 };

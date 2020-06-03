@@ -11,7 +11,11 @@ const initialStore = {
   },
   loading: false,
   error: null,
-  isFinished: false
+  isFinished: false,
+  timerId: null,
+  isSubmitted: false,
+  userName: null,
+  UserEmail: null
 };
 
 const updateUserAnswers = (
@@ -50,16 +54,18 @@ const rootReducer = (state = initialStore, action) => {
       };
 
     case "FETCH_TEST_SUCCES":
+      const { timeLeft, questions, ...options } = action.payload;
       return {
         ...state,
         total: {
           finishedCount: 0,
-          totalCount: action.payload.length,
+          totalCount: questions.length,
           isPaussed: false,
-          timeLeft: action.payload.length * TIME_FOR_ONE_QUESTION
+          timeLeft: timeLeft
         },
+        questions,
+        ...options,
         loading: false,
-        questions: action.payload,
         error: null
       };
 
@@ -79,7 +85,11 @@ const rootReducer = (state = initialStore, action) => {
     case "TEST_FINISHED":
       return {
         ...state,
-        isFinished: true
+        isFinished: true,
+        total: {
+          ...state.total,
+          timeLeft: 0
+        }
       };
 
     case "SET_TIMER":
@@ -94,6 +104,35 @@ const rootReducer = (state = initialStore, action) => {
         total: {
           ...state.total,
           timeLeft: state.total.timeLeft - 1000
+        }
+      };
+
+    case "CHANGE_USER_EMAIL":
+      return {
+        ...state,
+        userEmail: action.payload
+      };
+
+    case "CHANGE_USER_NAME":
+      return {
+        ...state,
+        userName: action.payload
+      };
+
+    case "FETCH_SEND_MAIL_FAILURE":
+      console.log(action.payload);
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+
+    case "PAUSE_TOGGLED":
+      return {
+        ...state,
+        total: {
+          ...state.total,
+          isPaussed: !state.total.isPaussed
         }
       };
 
