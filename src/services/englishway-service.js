@@ -30,9 +30,13 @@ export default class EnglishWayService {
       langId: data.test_lang,
       langName: data.acf.ut_lang.name,
       timeLeft: data.acf.ut_timeleft * 60 * 1000,
-      userLevels: Object.values(data.acf.urovni_znanij).filter(level => {
-        return Boolean(level.name);
-      })
+      userLevels: Object.values(data.acf.urovni_znanij)
+        .filter(level => {
+          return Boolean(level.name);
+        })
+        .map(level => {
+          return { name: level.name, answCount: level.answ_count };
+        })
     };
   };
 
@@ -56,7 +60,7 @@ export default class EnglishWayService {
     let totalData = [];
     do {
       const { data, headers } = await this.getResource(
-        `/tests/?test_lang=${langId}&page=${page}`,
+        `/tests/?per_page=100&test_lang=${langId}&page=${page}`,
         {
           headerName: "totalPages",
           headerString: "x-wp-totalpages"

@@ -43,7 +43,6 @@ const updateUserAnswers = (
 };
 
 const rootReducer = (state = initialStore, action) => {
-  console.log(action.type);
   console.log(state);
   switch (action.type) {
     case "FETCH_TEST_REQUEST":
@@ -120,7 +119,6 @@ const rootReducer = (state = initialStore, action) => {
       };
 
     case "FETCH_SEND_MAIL_FAILURE":
-      console.log(action.payload);
       return {
         ...state,
         loading: false,

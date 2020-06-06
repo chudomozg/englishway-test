@@ -14,8 +14,14 @@ const FinishFormContainer = props => {
   return <FinishForm {...props} />;
 };
 
-const mapStateToProps = ({ UserName, UserEmail }) => {
-  return { UserName, UserEmail };
+const mapStateToProps = ({
+  UserName,
+  UserEmail,
+  questions,
+  userAnswers,
+  userLevels
+}) => {
+  return { UserName, UserEmail, questions, userAnswers, userLevels };
 };
 
 const mapDispatchToProps = (dispatch, { service, totalData }) => {

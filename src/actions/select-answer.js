@@ -1,7 +1,7 @@
-const selectAnswer = (questionId, AnswerIdx) => {
+const selectAnswer = (questionId, answerIdx) => {
   return {
     type: "USER_SELECT_ANSWER",
-    payload: { questionId, AnswerIdx }
+    payload: { questionId, answerIdx }
   };
 };
 
