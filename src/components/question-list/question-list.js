@@ -1,6 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import MediaQuery from "react-responsive";
 
 import QuestionItem from "../question-item";
 import Spinner from "../spinner";
@@ -14,23 +17,45 @@ import withServiceConsumer from "../hoc/with-service-consumer";
 import selectAnswer from "../../actions/select-answer";
 
 class QuestionList extends Component {
-  render() {
+  _questionsMap() {
     const { questions, onSelectAnswer, isPaussed } = this.props;
+    return questions.map((item, idx) => {
+      return (
+        <QuestionItem
+          idx={idx + 1}
+          item={item}
+          onSelectAnswer={onSelectAnswer}
+          isPaussed={isPaussed}
+        />
+      );
+    });
+  }
+
+  render() {
+    const carouselOptions = {
+      showArrows: true,
+      showStatus: false,
+      showIndicators: false,
+      infiniteLoop: false,
+      showThumbs: false,
+      useKeyboardArrows: true,
+      autoPlay: false,
+      stopOnHover: true,
+      swipeable: true,
+      dynamicHeight: true,
+      emulateTouch: false
+    };
     return (
-      <div className="question-items row">
-        {questions.map((item, idx) => {
-          return (
-            // <div key={item.id}>
-            <QuestionItem
-              idx={idx + 1}
-              item={item}
-              onSelectAnswer={onSelectAnswer}
-              isPaussed={isPaussed}
-            />
-            // </div>
-          );
-        })}
-      </div>
+      <Fragment>
+        <MediaQuery maxWidth={992}>
+          <div className="question-items">
+            <Carousel {...carouselOptions}>{this._questionsMap()}</Carousel>
+          </div>
+        </MediaQuery>
+        <MediaQuery minWidth={993}>
+          <div className="question-items row">{this._questionsMap()}</div>
+        </MediaQuery>
+      </Fragment>
     );
   }
 }

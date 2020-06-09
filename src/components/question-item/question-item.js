@@ -31,12 +31,17 @@ const QuestionItem = ({ item, onSelectAnswer, idx, isPaussed }) => {
   };
 
   return (
-    <div className="question-item col-12 col-lg-6">
+    <div className="question-item">
+      <div className="question-item__top-number">
+        <b>{idx}</b> вопрос
+      </div>
       <div className="question-item__text">
         <span className="question-item__number">{idx}.</span>
         {ReactHtmlParser(text)}
       </div>
-      <div className="question-item__answers">{answerList(answers, id)}</div>
+      <div className="question-item__answers-wrapper">
+        <div className="question-item__answers">{answerList(answers, id)}</div>
+      </div>
     </div>
   );
 };

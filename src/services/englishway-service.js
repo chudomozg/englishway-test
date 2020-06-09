@@ -1,8 +1,8 @@
 export default class EnglishWayService {
-  // _apiBase = "http://t2.imake.site/wp-json/wp/v2";
-  // _urlBase = "http://t2.imake.site/";
-  _apiBase = "http://englishway.site/wp-json/wp/v2";
-  _urlBase = "http://englishway.site/";
+  _apiBase = "http://t2.imake.site/wp-json/wp/v2";
+  _urlBase = "http://t2.imake.site/";
+  // _apiBase = "http://englishway.site/wp-json/wp/v2";
+  // _urlBase = "http://englishway.site/";
 
   _transformQuestion = ({ id, acf }) => {
     const answers = Object.values(acf.answers).map(ans => {
@@ -79,8 +79,8 @@ export default class EnglishWayService {
   };
 
   getTest = async () => {
-    // const ewPostId = window.ewPostId.id;
-    const ewPostId = "580";
+    const ewPostId = window.ewPostId.id;
+    // const ewPostId = "580";
     const testOptions = await this.getTestOptions(ewPostId);
     const testData = await this.getAllQuestions(testOptions.langId);
 
