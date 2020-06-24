@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { SMALL_TIME_LEFT } from "../../constants";
 
 export default class TimeCounter extends Component {
   componentDidMount() {
@@ -18,24 +19,28 @@ export default class TimeCounter extends Component {
   componentDidUpdate() {
     const {
       timeLeft,
-      testFinished,
       timerId,
       isFinished,
       isPaussed,
       setTimer,
-      timerTick
+      timerTick,
+      toggleSmallTimeLeftNotifWind,
+      toggleFinishTestMsgWind
     } = this.props;
     if (timeLeft <= 0) {
       clearInterval(timerId);
       if (!isFinished) {
-        testFinished();
+        toggleFinishTestMsgWind();
       }
+    }
+
+    if (timeLeft == SMALL_TIME_LEFT) {
+      toggleSmallTimeLeftNotifWind();
     }
 
     if (isPaussed) {
       clearInterval(timerId);
       setTimer(null);
-      console.log("clear");
     } else {
       if (timerId == null) {
         let timer = setInterval(() => {

@@ -4,7 +4,10 @@ import { compose } from "redux";
 
 import QuestionList from "../question-list";
 import Total from "../total";
+import AreYouShureWindow from "../are-you-sure-window";
 import FinishFormContainer from "../../containers/finish-form-container";
+import SmallTimeLeftWindow from "../small-time-left-window";
+import FinishTestMsgWind from "../finish-test-msg-window";
 
 const Test = ({ isFinished, isSubmitted }) => {
   if (isFinished) {
@@ -17,6 +20,9 @@ const Test = ({ isFinished, isSubmitted }) => {
     <Fragment>
       <Total />
       <QuestionList />
+      <AreYouShureWindow />
+      <SmallTimeLeftWindow />
+      <FinishTestMsgWind />
     </Fragment>
   );
 };

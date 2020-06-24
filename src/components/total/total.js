@@ -8,10 +8,12 @@ import TimeCounter from "../time-counter";
 import PauseButton from "../pause-button";
 import TotalFinishText from "../total-finish-text";
 
-import testFinished from "../../actions/test-finished";
 import timerTick from "../../actions/timer-tick";
 import setTimer from "../../actions/set-timer";
 import pauseToggle from "../../actions/pause-toggle";
+import toggleSureCloseConfWindow from "../../actions/toggle-sure-close-conf-window";
+import toggleSmallTimeLeftNotifWind from "../../actions/toggle-small-time-left-notif-wind";
+import toggleFinishTestMsgWind from "../../actions/toggle-finish-test-msg-window";
 
 import totalWithEwStruct from "../hoc/total-with-ew-structure";
 import withIndicators from "../hoc/with-indicators";
@@ -23,7 +25,10 @@ const Total = ({
   setTimer,
   timerId,
   isFinished,
-  pauseToggle
+  pauseToggle,
+  toggleSureCloseConfWindow,
+  toggleSmallTimeLeftNotifWind,
+  toggleFinishTestMsgWind
 }) => {
   const { finishedCount, totalCount, isPaussed, timeLeft } = total;
   return (
@@ -43,11 +48,16 @@ const Total = ({
           timerId={timerId}
           isFinished={isFinished}
           isPaussed={isPaussed}
+          toggleSmallTimeLeftNotifWind={toggleSmallTimeLeftNotifWind}
+          toggleFinishTestMsgWind={toggleFinishTestMsgWind}
         />
         <PauseButton isPaussed={isPaussed} pauseToggle={pauseToggle} />
       </div>
       <TotalFinishText />
-      <FinishButton testFinished={testFinished} />
+      <FinishButton
+        testFinished={testFinished}
+        onClick={toggleSureCloseConfWindow}
+      />
     </div>
   );
 };
@@ -57,10 +67,12 @@ const mapStateToProps = ({ total, loading, error, timerId, isFinished }) => {
 };
 
 const mapDispatchToProps = {
-  testFinished,
   setTimer,
   timerTick,
-  pauseToggle
+  pauseToggle,
+  toggleSureCloseConfWindow,
+  toggleSmallTimeLeftNotifWind,
+  toggleFinishTestMsgWind
 };
 
 export default compose(

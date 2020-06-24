@@ -15,7 +15,10 @@ const initialStore = {
   timerId: null,
   isSubmitted: false,
   userName: null,
-  UserEmail: null
+  UserEmail: null,
+  sureCloseConfWindShow: false,
+  smallTimeLeftNotifWindShow: false,
+  finishTestMsgWindowShow: false
 };
 
 const updateUserAnswers = (
@@ -44,6 +47,7 @@ const updateUserAnswers = (
 
 const rootReducer = (state = initialStore, action) => {
   console.log(state);
+  console.log(action.type);
   switch (action.type) {
     case "FETCH_TEST_REQUEST":
       return {
@@ -132,6 +136,24 @@ const rootReducer = (state = initialStore, action) => {
           ...state.total,
           isPaussed: !state.total.isPaussed
         }
+      };
+
+    case "TOGGLE_SURE_CONFIRM_WINDOW":
+      return {
+        ...state,
+        sureCloseConfWindShow: !state.sureCloseConfWindShow
+      };
+
+    case "TOGGLE_SMALL_TIME_LEFT_NOTIFICATION_WINDOW_SHOW":
+      return {
+        ...state,
+        smallTimeLeftNotifWindShow: !state.smallTimeLeftNotifWindShow
+      };
+
+    case "TOGGLE_FINISH_TEST_MESSAGE_WINDOW_SHOW":
+      return {
+        ...state,
+        finishTestMsgWindowShow: !state.finishTestMsgWindowShow
       };
 
     default:
