@@ -7,7 +7,7 @@ const withIndicators = () => Wrapped => {
     render() {
       const { loading, error, ...props } = this.props;
       if (loading) {
-        return <Spinner />;
+        return <Spinner text="Загрузка..." />;
       }
 
       if (error) {

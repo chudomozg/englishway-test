@@ -9,8 +9,8 @@ const withTotalInfo = () => Wrapped => {
   return connect(mapStateToProps)(wrappedWithProps);
 };
 
-const mapStateToProps = ({ userName, UserEmail, questions, userAnswers }) => {
-  return { totalData: { userName, UserEmail, questions, userAnswers } };
+const mapStateToProps = ({ userName, userEmail, questions, userAnswers }) => {
+  return { totalData: { userName, userEmail, questions, userAnswers } };
 };
 
 export default withTotalInfo;

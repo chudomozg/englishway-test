@@ -2,11 +2,10 @@ import sendMailRequested from "./send-mail-requested";
 import mailSended from "./mail-sended";
 import sendMailError from "./send-mail-error";
 
-const sendMails = (service, dispatch, totalData) => () => {
+const sendMails = (service, dispatch, testResult) => {
   dispatch(sendMailRequested());
-  console.log(totalData);
   service
-    .sendFinishData(totalData)
+    .sendFinishData(testResult)
     .then(() => dispatch(mailSended()))
     .catch(error => dispatch(sendMailError(error)));
 };

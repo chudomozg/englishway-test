@@ -8,18 +8,21 @@ import AreYouShureWindow from "../are-you-sure-window";
 import FinishFormContainer from "../../containers/finish-form-container";
 import SmallTimeLeftWindow from "../small-time-left-window";
 import FinishTestMsgWind from "../finish-test-msg-window";
+import AfterTestRedirect from "../after-test-redirect";
 
-const Test = ({ isFinished, isSubmitted }) => {
+const Test = ({ isFinished, isSubmitted, langName }) => {
   if (isFinished) {
-    return <FinishFormContainer />;
+    if (!isSubmitted) {
+      return <FinishFormContainer />;
+    } else {
+      return <AfterTestRedirect />;
+    }
   }
-  if (isSubmitted) {
-    return "Спасибо, вам все отправили";
-  }
+
   return (
     <Fragment>
       <Total />
-      <QuestionList />
+      <QuestionList langName={langName} />
       <AreYouShureWindow />
       <SmallTimeLeftWindow />
       <FinishTestMsgWind />
@@ -27,8 +30,8 @@ const Test = ({ isFinished, isSubmitted }) => {
   );
 };
 
-const mapStateToProps = ({ isFinished, isSubmitted }) => {
-  return { isFinished, isSubmitted };
+const mapStateToProps = ({ isFinished, isSubmitted, langName }) => {
+  return { isFinished, isSubmitted, langName };
 };
 
 const mapDispatchToProps = {};

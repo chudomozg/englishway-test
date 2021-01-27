@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-const Spinner = () => {
+const Spinner = ({ text }) => {
   return (
     <div className="test-spinner m-auto">
       <div className="loadingio-spinner-rolling-ddlfhp53kjc m-auto">
@@ -8,9 +8,7 @@ const Spinner = () => {
           <div></div>
         </div>
       </div>
-      <div className="test-spinner__text m-auto">
-        Тест загружается, пожалуйста подождите....
-      </div>
+      <div className="test-spinner__text m-auto">{text}</div>
     </div>
   );
 };

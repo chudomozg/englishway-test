@@ -1,8 +1,6 @@
 export default class EnglishWayService {
-  // _apiBase = "http://t2.imake.site/wp-json/wp/v2";
-  // _urlBase = "http://t2.imake.site/";
-  _apiBase = "http://englishway.site/wp-json/wp/v2";
-  _urlBase = "http://englishway.site/";
+  _apiBase = "http://englishway55.ru/wp-json/wp/v2";
+  _urlBase = "http://englishway55.ru/";
 
   _transformQuestion = ({ id, acf }) => {
     const answers = Object.values(acf.answers).map(ans => {
@@ -30,7 +28,7 @@ export default class EnglishWayService {
       langId: data.test_lang,
       langName: data.acf.ut_lang.name,
       timeLeft: data.acf.ut_timeleft * 60 * 1000,
-      userLevels: Object.values(data.acf.urovni_znanij)
+      profLevels: Object.values(data.acf.urovni_znanij)
         .filter(level => {
           return Boolean(level.name);
         })
@@ -79,8 +77,8 @@ export default class EnglishWayService {
   };
 
   getTest = async () => {
-    // const ewPostId = window.ewPostId.id;
-    const ewPostId = "580";
+    const ewPostId = window.ewPostId.id;
+    // const ewPostId = "580";
     const testOptions = await this.getTestOptions(ewPostId);
     const testData = await this.getAllQuestions(testOptions.langId);
 
@@ -91,28 +89,32 @@ export default class EnglishWayService {
   };
 
   sendFinishData = async totalData => {
-    const res = fetch(
-      `${this._urlBase}/wp-admin/admin-ajax.php?action=ew_send_finish_test_mail`,
-      {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        mode: "no-cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, *same-origin, omit
-        headers: {
-          "Content-Type": "application/json" // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        redirect: "follow", // manual, *follow, error
-        referrerPolicy: "no-referrer", // no-referrer, *client
-        body: JSON.stringify(totalData) // body data type must match "Content-Type" header
-      }
-    );
-    console.log(res.ok);
+    let requestBody = JSON.stringify({
+      ...totalData
+    });
+    const res = await fetch(`${this._urlBase}wp-json/ew/v2/send_mails/`, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      // mode: "no-cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json;" // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      // redirect: "follow", // manual, *follow, error
+      // referrerPolicy: "no-referrer", // no-referrer, *client
+      body: requestBody // body data type must match "Content-Type" header
+    });
     if (!res.ok) {
       throw new Error(
-        `Could not fetch post data to ${this._urlBase}/wp-admin/admin-ajax.php?action=ew_send_finish_test_mail` +
+        `Could not fetch post data to ${this._urlBase}wp-json/ew/v2/send_mails/` +
           `, received ${res.status}`
       );
     }
+    // console.log(await res.json());
     return await res.json();
+  };
+
+  afterTestRedirect = () => {
+    window.location.href = `${this._urlBase}/test`;
   };
 }

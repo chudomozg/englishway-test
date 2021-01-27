@@ -3,19 +3,29 @@ import { TIME_FOR_ONE_QUESTION } from "../constants";
 const initialStore = {
   questions: [],
   userAnswers: [],
+  profLevels: [],
   total: {
     finishedCount: 0,
     totalCount: 0,
-    isPaussed: false,
+    isPaussed: true,
     timeLeft: 0
   },
+  langName: null,
+  langId: null,
+  title: null,
   loading: false,
   error: null,
   isFinished: false,
   timerId: null,
   isSubmitted: false,
   userName: null,
-  UserEmail: null,
+  userEmail: null,
+  userPhone: null,
+  testResult: {
+    correctAnswersCount: null,
+    incorrectAnswersCount: null,
+    userLevel: null
+  },
   sureCloseConfWindShow: false,
   smallTimeLeftNotifWindShow: false,
   finishTestMsgWindowShow: false
@@ -45,9 +55,37 @@ const updateUserAnswers = (
   };
 };
 
+const getUserLevel = (correctAnswersCount, profLevels) => {
+  const lev = profLevels.reduce((level, { answCount, name }) => {
+    return correctAnswersCount >= Number(answCount) ? name : level;
+  }, 0);
+  return lev;
+};
+
+const getTestResult = (questions, userAnswers, profLevels) => {
+  const correctAnswersCount = userAnswers.reduce(
+    (counter, { questionId, answerIdx }) => {
+      const answ = questions.find(question => {
+        return question.id == questionId;
+      }).correctAnswerIdx;
+      if (answ == answerIdx) {
+        counter++;
+      }
+      return counter;
+    },
+    0
+  );
+  const incorrectAnswersCount = questions.length - correctAnswersCount;
+  return {
+    correctAnswersCount,
+    incorrectAnswersCount,
+    userLevel: getUserLevel(correctAnswersCount, profLevels)
+  };
+};
+
 const rootReducer = (state = initialStore, action) => {
-  console.log(state);
-  console.log(action.type);
+  // console.log(state);
+  // console.log(action.type);
   switch (action.type) {
     case "FETCH_TEST_REQUEST":
       return {
@@ -92,7 +130,12 @@ const rootReducer = (state = initialStore, action) => {
         total: {
           ...state.total,
           timeLeft: 0
-        }
+        },
+        testResult: getTestResult(
+          state.questions,
+          state.userAnswers,
+          state.profLevels
+        )
       };
 
     case "SET_TIMER":
@@ -122,11 +165,30 @@ const rootReducer = (state = initialStore, action) => {
         userName: action.payload
       };
 
+    case "CHANGE_USER_PHONE":
+      return {
+        ...state,
+        userPhone: action.payload
+      };
+
+    case "FETCH_SEND_MAIL_REQUEST":
+      return {
+        ...state,
+        loading: true
+      };
+
     case "FETCH_SEND_MAIL_FAILURE":
       return {
         ...state,
         loading: false,
         error: action.payload
+      };
+
+    case "FETCH_SEND_MAIL_SUCCES":
+      return {
+        ...state,
+        loading: false,
+        isSubmitted: true
       };
 
     case "PAUSE_TOGGLED":
@@ -154,6 +216,15 @@ const rootReducer = (state = initialStore, action) => {
       return {
         ...state,
         finishTestMsgWindowShow: !state.finishTestMsgWindowShow
+      };
+
+    case "SET_TIME_LEFT":
+      return {
+        ...state,
+        total: {
+          ...state.total,
+          timeLeft: action.payload
+        }
       };
 
     default:

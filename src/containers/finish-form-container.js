@@ -7,6 +7,7 @@ import withServiceConsumer from "../components/hoc/with-service-consumer";
 import FinishForm from "../components/finish-form";
 import changeName from "../actions/change-name";
 import changeEmail from "../actions/change-email";
+import changePhone from "../actions/change-phone";
 import sendMails from "../actions/send-mails";
 import withTotalInfo from "../components/hoc/with-total-info";
 
@@ -15,20 +16,24 @@ const FinishFormContainer = props => {
 };
 
 const mapStateToProps = ({
-  UserName,
-  UserEmail,
+  userName,
+  userEmail,
+  userPhone,
+  testResult,
   questions,
-  userAnswers,
-  userLevels
+  userAnswers
 }) => {
-  return { UserName, UserEmail, questions, userAnswers, userLevels };
+  return { userName, userEmail, userPhone, testResult, questions, userAnswers };
 };
 
-const mapDispatchToProps = (dispatch, { service, totalData }) => {
+const mapDispatchToProps = (dispatch, { service }) => {
   return {
-    sendMails: sendMails(service, dispatch, totalData),
-    changeName: UserName => dispatch(changeName(UserName)),
-    changeEmail: UserEmail => dispatch(changeEmail(UserEmail))
+    sendMails: testResult => {
+      sendMails(service, dispatch, testResult);
+    },
+    changeName: userName => dispatch(changeName(userName)),
+    changeEmail: userEmail => dispatch(changeEmail(userEmail)),
+    changePhone: userPhone => dispatch(changePhone(userPhone))
   };
 };
 

@@ -3,8 +3,8 @@ import { SMALL_TIME_LEFT } from "../../constants";
 
 export default class TimeCounter extends Component {
   componentDidMount() {
-    const { setTimer, timerTick, timerId } = this.props;
-    if (timerId == null) {
+    const { setTimer, timerTick, timerId, isPaussed } = this.props;
+    if (timerId == null && !isPaussed) {
       let timer = setInterval(() => {
         timerTick();
       }, 1000);
@@ -13,7 +13,9 @@ export default class TimeCounter extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.props.timerId);
+    const { timerId, setTimer } = this.props;
+    clearInterval(timerId);
+    setTimer(null);
   }
 
   componentDidUpdate() {

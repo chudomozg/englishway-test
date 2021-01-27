@@ -67,7 +67,7 @@ class QuestiionListContainers extends Component {
   render() {
     const { loading, error, ...props } = this.props;
     if (loading) {
-      return <Spinner />;
+      return <Spinner text="Тест загружается, пожалуйста подождите...." />;
     }
 
     if (error) {

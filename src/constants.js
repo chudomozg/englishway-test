@@ -7,3 +7,5 @@ export const SMALL_TIME_LEFT_MESSAGE =
 export const FINISH_TEST_MESSAGE =
   "Время на прохождение теста истекло. Сейчас мы перенаправим вас на страницу получения результатов"; //Time over message
 export const SMALL_TIME_LEFT = 3 * 60 * 1000; //ms time when show notification about small time left
+export const TIME_BEFORE_REDIRECT = 10 * 1000; //ms time when test was finished and emails was send before redirect
+export const TEXT_BEFORE_REDIRECT = `Результаты теста были отправлены на указанную вами почту.`;
